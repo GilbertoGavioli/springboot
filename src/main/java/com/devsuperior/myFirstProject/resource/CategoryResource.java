@@ -32,10 +32,12 @@ public class CategoryResource {
 		return ResponseEntity.ok().body(lista);
 	}
 	
-	@GetMapping(value ="save/{id}/{nome}")
-	public ResponseEntity<List<Category>> save(@PathVariable Long id, @PathVariable String nome )
+	@GetMapping(value ="save/{nome}")
+	public ResponseEntity<List<Category>> save(@PathVariable String nome )
 	{
-		Category categoria = new Category(id,nome);
+		//Category categoria = new Category(null,nome);
+		Category categoria = new Category();
+		categoria.setName(nome);
 		categoryRrepository.save(categoria );
 		
 		List<Category> lista = categoryRrepository.findAll();
@@ -57,7 +59,10 @@ public class CategoryResource {
 			}
 		}
 		*/
-		Category cat = categoryRrepository.findById(id);
+		Category cat = null;
+		if (!categoryRrepository.findById(id).isEmpty()) {
+		   cat = categoryRrepository.findById(id).get();
+		}
 
 		if (cat!=null) {
 			return ResponseEntity.ok().body(cat);
